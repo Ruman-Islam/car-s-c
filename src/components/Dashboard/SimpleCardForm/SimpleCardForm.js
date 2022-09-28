@@ -48,11 +48,11 @@ const SimpleCardForm = ({ handlePayment, servicePrice }) => {
       card: elements.getElement(CardNumberElement),
     });
     if (error) {
-      console.log('[error]', error);
+      // console.log('[error]', error);
       setError(error.message);
     } else {
       handlePayment(paymentMethod);
-      console.log('[PaymentMethod]', paymentMethod);
+      // console.log('[PaymentMethod]', paymentMethod);
     }
   };
 
@@ -64,16 +64,16 @@ const SimpleCardForm = ({ handlePayment, servicePrice }) => {
           <CardNumberElement
             options={options}
             onReady={() => {
-              console.log('CardNumberElement [ready]');
+              // console.log('CardNumberElement [ready]');
             }}
             onChange={(event) => {
-              console.log('CardNumberElement [change]', event);
+              // console.log('CardNumberElement [change]', event);
             }}
             onBlur={() => {
-              console.log('CardNumberElement [blur]');
+              // console.log('CardNumberElement [blur]');
             }}
             onFocus={() => {
-              console.log('CardNumberElement [focus]');
+              // console.log('CardNumberElement [focus]');
             }}
           />
         </label>

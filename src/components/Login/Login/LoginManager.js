@@ -24,7 +24,6 @@ export const handleGoogleSignIn = async () => {
         photo: photoURL,
         success: true,
       };
-      //   console.log(res);
       return signedInUser;
     })
     .catch((error) => {

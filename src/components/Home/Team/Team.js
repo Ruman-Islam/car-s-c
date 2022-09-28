@@ -7,6 +7,7 @@ import TeamMember4 from '../../../images/team4.jpg';
 import TeamCard from '../TeamCard/TeamCard';
 
 const Team = () => {
+
   const teams = [
     {
       name: 'Jerome Luel',
@@ -29,6 +30,7 @@ const Team = () => {
       img: TeamMember4,
     },
   ];
+
   return (
     <section className="team">
       <div className="text-center title">

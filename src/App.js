@@ -7,10 +7,15 @@ import Dashboard from './components/Dashboard/Dashboard/Dashboard';
 import Home from './components/Home/Home/Home';
 import Login from './components/Login/Login/Login';
 import PrivateRoute from './components/Login/PrivateRoute/PrivateRoute';
+// import UseAdmin from './hooks/UseAdmin';
+
 export const UserContext = createContext();
+
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState({});
-  const [admin, setAdmin] = useState(false);
+  const [admin, setAdmin] = useState(true);
+  // const { isAdmin } = UseAdmin(loggedInUser);
+
   return (
     <UserContext.Provider
       value={[loggedInUser, setLoggedInUser, admin, setAdmin]}

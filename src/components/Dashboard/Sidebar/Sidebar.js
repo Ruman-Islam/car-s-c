@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,30 +10,27 @@ import {
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { UserContext } from '../../../App';
+import UseAdmin from '../../../hooks/UseAdmin';
 
 const Sidebar = () => {
   const { url } = useRouteMatch();
-  const [loggedInUser, setLoggedInUser, admin, setAdmin] = useContext(
-    UserContext
-  );
-  const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    fetch(`https://fierce-falls-59592.herokuapp.com/isAdmin/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: loggedInUser.email }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          setIsAdmin(data);
-          setAdmin(true);
-        }
-      });
-  }, []);
-  console.log(loggedInUser);
+  const [loggedInUser, , ,] = useContext(UserContext);
+  const { isAdmin } = UseAdmin(loggedInUser);
+
+  // useEffect(() => {
+
+  //   fetch(`http://localhost:8000/isAdmin`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ email: loggedInUser.email }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => setAdmin(data));
+
+  // }, [loggedInUser.email, setAdmin]);
+
   return (
     <>
       {isAdmin ? (
@@ -69,7 +66,7 @@ const Sidebar = () => {
             <span>
               <FontAwesomeIcon icon={faShoppingCart} />
             </span>
-            Book
+            Cart
           </Link>
           <Link className="sidebarLink" to={`${url}/book-list`}>
             <span>

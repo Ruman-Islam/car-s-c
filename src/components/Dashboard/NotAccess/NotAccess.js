@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const NotAccess = () => {
+
   return (
     <div className="noAccess">
       <h3>Sorry, Yon Have No Access in This Page</h3>

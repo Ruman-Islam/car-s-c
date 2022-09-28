@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 // import jwt_decode from 'jwt-decode';
 
 const PrivateRoute = ({ children, ...rest }) => {
-  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const [loggedInUser,] = useContext(UserContext);
   //   const isLoggedIn = () => {
   //     const token = sessionStorage.getItem('token');
   //     if (!token) {
@@ -17,6 +17,7 @@ const PrivateRoute = ({ children, ...rest }) => {
   //     // will return false if expired and will return true if not expired
   //     return decodedToken.exp > currentTime;
   //   };
+
   return (
     <Route
       {...rest}

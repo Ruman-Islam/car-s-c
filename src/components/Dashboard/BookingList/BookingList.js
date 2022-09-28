@@ -1,26 +1,39 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Row, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import fetcher from '../../../api/axios';
 import { UserContext } from '../../../App';
 import BookingListCard from '../BookingListCard/BookingListCard';
+
+
 const BookingList = () => {
-  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-  const [loadData, setLoadData] = useState(false);
+  const [loggedInUser,] = useContext(UserContext);
+  const [loadData, setLoadData] = useState(true);
   const [userOrders, setUserOrders] = useState([]);
+
   useEffect(() => {
-    fetch(
-      `https://fierce-falls-59592.herokuapp.com/order?email=${loggedInUser.email}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setUserOrders(data);
-        setLoadData(true);
-      });
-  }, []);
+    (async () => {
+      try {
+        const res = await fetcher.get(`get-user-book-list?email=${loggedInUser?.email}`)
+        if (res.status === 200) {
+          setLoadData(false)
+          setUserOrders(res.data.result)
+        }
+      } catch (error) {
+        setLoadData(false)
+      }
+    })()
+  }, [loggedInUser.email]);
+
+
   return (
     <>
       {loadData ? (
+        <div className="spinner">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
         <>
           <div className="p-3 d-flex justify-content-between">
             <h3>Book List</h3>
@@ -51,10 +64,6 @@ const BookingList = () => {
             </div>
           </div>
         </>
-      ) : (
-        <div className="spinner">
-          <Spinner animation="border" variant="primary" />
-        </div>
       )}
     </>
   );

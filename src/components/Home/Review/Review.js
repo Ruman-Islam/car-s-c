@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Spinner } from 'react-bootstrap';
+import fetcher from '../../../api/axios';
 import ReviewCard from '../ReviewCard/ReviewCard';
 
 const Review = () => {
   const [reviews, setReviews] = useState([]);
   const [loadData, setLoadData] = useState(false);
+
   useEffect(() => {
-    const url = 'https://fierce-falls-59592.herokuapp.com/reviews';
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setReviews(data);
-        setLoadData(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    (async () => {
+      try {
+        const { data: { result } } = await fetcher.get('get-all-review')
+        setLoadData(false);
+        setReviews(result);
+      } catch (error) {
+        setLoadData(false);
+      }
+    })()
+
   }, []);
+
   return (
     <section className="review ">
       <div className="text-center title">
@@ -25,6 +27,10 @@ const Review = () => {
         <h2>Our Service Review</h2>
       </div>
       {loadData ? (
+        <div className="spin">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
         <Container>
           <Row className="py-4">
             {reviews.map((review, idx) => (
@@ -32,10 +38,6 @@ const Review = () => {
             ))}
           </Row>
         </Container>
-      ) : (
-        <div className="spin">
-          <Spinner animation="border" variant="primary" />
-        </div>
       )}
     </section>
   );

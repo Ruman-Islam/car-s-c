@@ -5,6 +5,7 @@ import './BookingListCard.css';
 const BookingListCard = ({ orders }) => {
   const { serviceName, serviceImage, serviceDesc, orderStatus } = orders;
   let className;
+
   switch (orderStatus) {
     case 'Pending':
       className = 'pending';
@@ -19,6 +20,7 @@ const BookingListCard = ({ orders }) => {
       className = 'default';
       break;
   }
+
   return (
     <Col lg={4} md={6} className="my-2">
       <div className="bookingCard rounded">

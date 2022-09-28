@@ -7,6 +7,7 @@ import DemoImg from '../../../images/default_profile.png';
 
 const ReviewCard = ({ reviewInfo }) => {
   const { name, userImg, review, companyName, rating } = reviewInfo;
+
   return (
     <Col md={6} className="my-3">
       <div className="review-main">

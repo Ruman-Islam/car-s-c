@@ -1,18 +1,18 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext, useEffect } from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../../App';
 import './NavbarComponent.css';
 import jwt_decode from 'jwt-decode';
+import UseAdmin from '../../../hooks/UseAdmin';
 
 const NavbarComponent = () => {
-  const [loggedInUser, setLoggedInUser, admin, setAdmin] = useContext(
-    UserContext
-  );
-  const handleLogOut = () => {
-    sessionStorage.removeItem('token');
-  };
+  const [loggedInUser, setLoggedInUser, ,] = useContext(UserContext);
+  const handleLogOut = () => { sessionStorage.removeItem('token'); };
+  const { isAdmin } = UseAdmin(loggedInUser);
   // . for show login login information in home page after reload (duplicate code from login page)
+
   useEffect(() => {
     const loginToken = sessionStorage.getItem('token');
     if (loginToken) {
@@ -25,7 +25,9 @@ const NavbarComponent = () => {
       };
       setLoggedInUser(user);
     }
-  }, []);
+  }, [setLoggedInUser]);
+
+
   return (
     <Navbar className="menu fixed-top" bg="light" expand="lg">
       <Container>
@@ -40,7 +42,7 @@ const NavbarComponent = () => {
             <Link className="links__color" to={'/'}>
               Home
             </Link>
-            {admin && (
+            {isAdmin && (
               <>
                 <Link className="links__color" to={'/admin'}>
                   Order List
@@ -50,7 +52,7 @@ const NavbarComponent = () => {
                 </Link>
               </>
             )}
-            {!admin && (
+            {!isAdmin && (
               <>
                 <Link className="links__color" to={'/admin/book-list'}>
                   Booking List

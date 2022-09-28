@@ -1,47 +1,51 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Row, Spinner } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import fetcher from '../../../api/axios';
 import { UserContext } from '../../../App';
 import ManageServiceCard from '../ManageServiceCard/ManageServiceCard';
 import NotAccess from '../NotAccess/NotAccess';
 
 const ManageService = () => {
-  const [loggedInUser, setLoggedInUser, admin, setAdmin] = useContext(
-    UserContext
-  );
-  const [loadData, setLoadData] = useState(false);
-  const [deleteData, setDeleteData] = useState(false);
+  const [loggedInUser, , admin,] = useContext(UserContext);
+  const [loadData, setLoadData] = useState(true);
+  const [reload, setReload] = useState(false);
   const [manageServices, setManageServices] = useState([]);
-  useEffect(() => {
-    const url = 'https://fierce-falls-59592.herokuapp.com/services';
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setManageServices(data);
-        setLoadData(true);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [deleteData]);
 
-  const deleteService = (id) => {
-    console.log(id);
-    // deleteService
-    const url = `https://fierce-falls-59592.herokuapp.com/deleteService/${id}`;
-    fetch(url, {
-      method: 'DELETE',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          setDeleteData(true);
-        }
-      });
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: { result } } = await fetcher.get('get-all-service')
+        setLoadData(false);
+        setManageServices(result);
+      } catch (error) {
+        setLoadData(false);
+      }
+    })()
+
+  }, [reload]);
+
+  const deleteService = async (id) => {
+    const res = await fetcher.patch(`delete-service?id=${id}`)
+    if (res.status === 200) {
+      setReload(!reload)
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Service deleted successfully',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
   };
+
   return (
     <>
       {loadData ? (
+        <div className="spinner">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
         <>
           <div className="p-3 d-flex justify-content-between">
             <h3>Add Review</h3>
@@ -63,10 +67,6 @@ const ManageService = () => {
             )}
           </div>
         </>
-      ) : (
-        <div className="spinner">
-          <Spinner animation="border" variant="primary" />
-        </div>
       )}
     </>
   );

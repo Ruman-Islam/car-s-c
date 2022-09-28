@@ -24,3 +24,29 @@
 .payment {
   height: auto;
 }
+.payment-box-wrapper {
+  width: 45%;
+}
+.payment-box-wrapper input {
+  width: 100%;
+  border: 0;
+  padding: 10px;
+}
+.payment-box {
+  display: flex;
+  margin-top: 20px;
+}
+.cvc {
+  margin-left: 15px;
+}
+.place-order-btn {
+  margin-top: 10px;
+  padding: 10px 30px;
+  cursor: pointer;
+  /* float: right; */
+  background-color: #1e69b8;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  /* display: inline-block !important; */
+}

@@ -4,28 +4,36 @@ import { useHistory, useParams } from 'react-router-dom';
 import { UserContext } from '../../../App';
 import { Spinner } from 'react-bootstrap';
 import ProcessPayment from '../ProcessPayment/ProcessPayment';
+import fetcher from '../../../api/axios';
+import Swal from 'sweetalert2';
 const axios = require('axios');
 
+
 const Book = () => {
-  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const [loggedInUser, , ,] = useContext(UserContext);
   const history = useHistory();
-  // const [paymentSuccess, setPaymentSuccess] = useState(false);
-  const [loadData, setLoadData] = useState(false);
+  const [loadData, setLoadData] = useState(true);
   const [serviceData, setServiceData] = useState({});
-  const { id } = useParams();
-  console.log(id);
-  useEffect(() => {
-    fetch(`https://fierce-falls-59592.herokuapp.com/service/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setServiceData(data[0]);
-        setLoadData(true);
-      });
-  }, [loadData]);
   const { displayName, email } = loggedInUser;
   const { serviceName, servicePrice, serviceImage, serviceDesc } = serviceData;
-  const handlePayment = (paymentMethod) => {
+  const { id } = useParams();
+
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: { result } } = await fetcher.get(`get-a-service?id=${id}`)
+        setLoadData(false);
+        setServiceData(result);
+      } catch (error) {
+        setLoadData(false);
+      }
+    })()
+  }, [loadData, id, serviceData]);
+
+
+  const handlePayment = (e) => {
+    e.preventDefault();
     const paymentInfo = {
       userName: displayName,
       email: email,
@@ -33,24 +41,32 @@ const Book = () => {
       servicePrice,
       serviceImage,
       serviceDesc,
-      paymentId: paymentMethod.id,
-      payWith: paymentMethod.card.brand,
       date: new Date(),
-      orderStatus: 'Pending',
     };
-    console.log(paymentMethod, paymentInfo);
-    const url = `https://fierce-falls-59592.herokuapp.com/addOrder`;
-    axios
-      .post(url, paymentInfo)
-      .then((res) => {
-        if (res) {
-          // setPaymentSuccess(true);
-          history.push('/admin/book-list');
+
+    (async () => {
+      try {
+        const res = await fetcher.post('add-a-order', paymentInfo)
+        if (res?.status === 200) {
+          const msg = res.data.result;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: msg,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          history.push('/admin/book-list')
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        })
+      }
+    })()
+
   };
 
   return (
@@ -61,6 +77,10 @@ const Book = () => {
       </div>
       <div className="sidebar__right p-3">
         {loadData ? (
+          <div className="spinner">
+            <Spinner animation="border" variant="primary" />
+          </div>
+        ) : (
           <>
             <div className="bookData">
               <label>User Name</label>
@@ -72,16 +92,34 @@ const Book = () => {
             </div>
             <div className="payment">
               <h5 className="py-4">Pay With Stripe</h5>
-              <ProcessPayment
+              {/* <ProcessPayment
                 servicePrice={servicePrice}
                 handlePayment={handlePayment}
-              />
+              /> */}
+              <form onSubmit={handlePayment}>
+                <div className='payment-box-wrapper'>
+                  <div>
+                    <h5>Card number</h5>
+                    <input placeholder='1234 1234 1234 1234' type="number" name="" id="" />
+                  </div>
+                  <div className='payment-box'>
+                    <div>
+                      <h5>Expiration date</h5>
+                      <input placeholder='MM/YY' type="number" name="" id="" />
+                    </div>
+                    <div className='cvc'>
+                      <h5>CVC</h5>
+                      <input placeholder='CVC' type="number" name="" id="" />
+                    </div>
+                  </div>
+                  <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h6>Your service charge {serviceData?.servicePrice} $</h6>
+                    <button type='submit' className='place-order-btn'>Place Order</button>
+                  </div>
+                </div>
+              </form>
             </div>
           </>
-        ) : (
-          <div className="spinner">
-            <Spinner animation="border" variant="primary" />
-          </div>
         )}
       </div>
     </>

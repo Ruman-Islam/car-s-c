@@ -5,15 +5,17 @@ import { UserContext } from '../../../App';
 import './AddReview.css';
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
+import fetcher from '../../../api/axios';
+import Swal from 'sweetalert2';
 const axios = require('axios');
 
 const AddReview = () => {
-  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const [loggedInUser,] = useContext(UserContext);
   const [ratingValue, setRatingValue] = useState(4);
   const history = useHistory();
-  const { register, handleSubmit, watch, errors } = useForm();
-  console.log(loggedInUser);
-  const onSubmit = (data) => {
+  const { register, handleSubmit, errors } = useForm();
+
+  const onSubmit = async (data) => {
     const serviceInfo = {
       name: data.name,
       companyName: data.companyName,
@@ -21,22 +23,24 @@ const AddReview = () => {
       userImg: loggedInUser.photo,
       rating: ratingValue,
     };
-    const url = `https://fierce-falls-59592.herokuapp.com/addReviews`;
-    axios
-      .post(url, serviceInfo)
-      .then((res) => {
-        if (res) {
-          history.push('/');
-        }
+
+    const res = await fetcher.post('add-review', serviceInfo)
+    if (res.status === 200) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Your review has been saved',
+        showConfirmButton: false,
+        timer: 1500
       })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
   };
+
   const error = {
     color: 'red',
     display: 'block',
   };
+
   return (
     <>
       <div className="p-3 d-flex justify-content-between dashboard__menu">

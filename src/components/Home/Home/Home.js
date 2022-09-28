@@ -8,6 +8,9 @@ import Services from '../Services/Services';
 import Team from '../Team/Team';
 
 const Home = () => {
+
+  console.log('Hello world');
+
   return (
     <>
       <Header />

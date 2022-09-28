@@ -6,6 +6,7 @@ import Post3 from '../../../images/blog-3.jpg';
 import BlogCard from '../BlogCard/BlogCard';
 
 const Blog = () => {
+
   const posts = [
     {
       name: 'Top 10 automotive advancements to look forward',
@@ -26,6 +27,7 @@ const Blog = () => {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua consectetur adipiscing elit.',
     },
   ];
+
   return (
     <section>
       <div className="text-center title">

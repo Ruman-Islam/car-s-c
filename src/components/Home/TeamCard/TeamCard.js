@@ -1,8 +1,9 @@
 import React from 'react';
-
 import { Col } from 'react-bootstrap';
+
 const TeamCard = ({ team }) => {
   const { name, position, img } = team;
+
   return (
     <Col md={6} lg={3} className="teamCard">
       <img className="rounded" src={img} alt={name} />

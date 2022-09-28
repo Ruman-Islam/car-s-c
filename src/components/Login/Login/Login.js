@@ -10,9 +10,12 @@ import {
   storeAuthToken,
 } from './LoginManager';
 import { UserContext } from '../../../App';
+
+
 const Login = () => {
-  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const [, setLoggedInUser] = useContext(UserContext);
   const loginToken = sessionStorage.getItem('token');
+
   // . location
   const history = useHistory();
   const location = useLocation();
@@ -20,18 +23,24 @@ const Login = () => {
   initializeFirebaseFramework();
 
   const googleSignIn = () => {
+
     handleGoogleSignIn().then((res) => {
+
+
       setLoggedInUser(res);
+
       authToken();
       history.replace(from);
     });
   };
+
   const authToken = () => {
     storeAuthToken().then((result) => {
       sessionStorage.setItem('token', result);
       history.replace(from);
     });
   };
+
   useEffect(() => {
     if (loginToken) {
       const tokenDecoded = jwt_decode(loginToken);
@@ -44,7 +53,8 @@ const Login = () => {
       setLoggedInUser(user);
       history.replace(from);
     }
-  }, []);
+  }, [from, history, setLoggedInUser, loginToken]);
+
   return (
     <div className="login text-center">
       <h3 className="py-4">

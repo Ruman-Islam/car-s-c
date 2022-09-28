@@ -3,6 +3,7 @@ import './HeaderMain.css';
 import { Button } from 'react-bootstrap';
 
 const HeaderMain = () => {
+
   return (
     <div className="banner">
       <div className="banner__content">

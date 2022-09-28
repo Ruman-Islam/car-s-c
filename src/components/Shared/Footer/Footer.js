@@ -7,6 +7,8 @@ import {
   faPhoneAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import './Footer.css';
+
+
 const Footer = () => {
   return (
     <Container>
@@ -77,7 +79,7 @@ const Footer = () => {
         </Col>
       </Row>
       <p className="text-center d-block">
-        Copy Right &copy; 2021 | All Right Reserved By Mofasser Hossain
+        Copy Right &copy; 2022 | All Right Reserved By Ruman Islam
       </p>
     </Container>
   );

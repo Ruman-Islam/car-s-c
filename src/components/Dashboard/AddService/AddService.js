@@ -7,13 +7,12 @@ import './AddService.css';
 const axios = require('axios');
 
 const AddService = () => {
-  const [loggedInUser, setLoggedInUser, admin, setAdmin] = useContext(
-    UserContext
-  );
+  const [loggedInUser, , admin,] = useContext(UserContext);
   const history = useHistory();
   const [loadImage, setLoadImage] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const { register, handleSubmit, errors } = useForm();
+
   const onSubmit = (data) => {
     const serviceInfo = {
       serviceName: data.name,
@@ -21,8 +20,9 @@ const AddService = () => {
       serviceDesc: data.desc,
       serviceImage: imageUrl,
     };
-    console.log(serviceInfo);
-    const url = `https://fierce-falls-59592.herokuapp.com/addService`;
+
+    // const url = `https://fierce-falls-59592.herokuapp.com/addService`;
+    const url = `http://localhost:8000/addService`;
     axios
       .post(url, serviceInfo)
       .then((res) => {
@@ -34,6 +34,7 @@ const AddService = () => {
         console.log(error);
       });
   };
+
   const handleImageUpload = (e) => {
     // console.log(e.target.files[0]);
     const imageData = new FormData();
@@ -42,7 +43,6 @@ const AddService = () => {
     axios
       .post('https://api.imgbb.com/1/upload', imageData)
       .then(function (response) {
-        // console.log(response);
         setImageUrl(response.data.data.display_url);
         setLoadImage(true);
       })
@@ -55,6 +55,7 @@ const AddService = () => {
     display: 'block',
   };
   // npm i react-hook-form@6.x
+
   return (
     <>
       <div className="p-3 d-flex justify-content-between">

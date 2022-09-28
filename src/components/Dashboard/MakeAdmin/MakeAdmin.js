@@ -5,25 +5,25 @@ import NotAccess from '../NotAccess/NotAccess';
 import './MakeAdmin.css';
 const axios = require('axios');
 const MakeAdmin = () => {
-  const [loggedInUser, setLoggedInUser, admin, setAdmin] = useContext(
-    UserContext
-  );
+  const [loggedInUser, , admin,] = useContext(UserContext);
   const [updateStatus, setUpdateStatus] = useState(false);
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
+
   const onSubmit = (data) => {
-    const url = `https://fierce-falls-59592.herokuapp.com/addAdmin`;
+    // const url = `https://fierce-falls-59592.herokuapp.com/addAdmin`;
+    const url = `http://localhost:8000/addAdmin`;
     axios
       .post(url, data)
       .then((res) => {
         if (res) {
           setUpdateStatus(true);
-          console.log(res);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   return (
     <>
       <div className="p-3 d-flex justify-content-between">

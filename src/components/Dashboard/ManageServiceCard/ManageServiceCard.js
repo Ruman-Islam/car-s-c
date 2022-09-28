@@ -4,6 +4,7 @@ import './ManageServiceCard.css';
 
 const ManageServiceCard = ({ service, deleteService }) => {
   const { _id, serviceName, serviceImage, serviceDesc } = service;
+
   return (
     <Col md={4} className="my-3">
       <div className="bookingCard rounded">

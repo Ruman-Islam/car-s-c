@@ -3,6 +3,7 @@ import { Col } from 'react-bootstrap';
 
 const BlogCard = ({ post }) => {
   const { name, img, text } = post;
+
   return (
     <Col md={4} className="my-2">
       <div className="blogCard serviceCard p-2 rounded">

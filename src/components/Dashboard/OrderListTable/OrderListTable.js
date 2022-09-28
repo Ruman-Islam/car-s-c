@@ -1,12 +1,18 @@
 import React from 'react';
 import Select from '@material-ui/core/Select';
 import './OrderListTable.css';
+import fetcher from '../../../api/axios';
+import Swal from 'sweetalert2';
+
+
 const OrderListTable = ({
   order,
   handleChange,
-  handleUpdate,
   updateLoader,
+  setReload,
+  reload
 }) => {
+
   const { _id, serviceName, userName, email, payWith, orderStatus } = order;
   let className;
   switch (orderStatus) {
@@ -23,6 +29,30 @@ const OrderListTable = ({
       className = 'default';
       break;
   }
+
+  const handleUpdate = async (e, id) => {
+
+    const res = await fetcher.patch(`update-order-status?status=${e.target.value}&id=${id}`)
+    if (res.status === 200) {
+      setReload(!reload);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Order status updated',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    } else {
+      setReload(!reload);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!',
+      })
+    }
+  };
+
+
   return (
     <tr>
       <td>{serviceName}</td>
@@ -34,11 +64,7 @@ const OrderListTable = ({
           className={className}
           native
           value={orderStatus}
-          onChange={handleChange}
-          onClick={() => handleUpdate(_id)}
-          inputProps={{
-            name: 'status',
-          }}
+          onChange={(e) => handleUpdate(e, _id)}
         >
           <option value={orderStatus}>{orderStatus}</option>
           <option value="Pending">Pending</option>
