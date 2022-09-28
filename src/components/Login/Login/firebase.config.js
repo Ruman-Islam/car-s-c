@@ -4,6 +4,7 @@ const firebaseConfig = {
   projectId: "boighor-75f9c",
   storageBucket: "boighor-75f9c.appspot.com",
   messagingSenderId: "597153887996",
-  appId: "1:597153887996:web:c2db4da022b2f876fe8979"
+  appId: "1:597153887996:web:c2db4da022b2f876fe8979",
+  measurementId: 'G-JP2VNN6XB3',
 };
 export default firebaseConfig;

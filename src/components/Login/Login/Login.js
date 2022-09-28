@@ -28,7 +28,6 @@ const Login = () => {
 
 
       setLoggedInUser(res);
-
       authToken();
       history.replace(from);
     });

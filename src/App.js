@@ -14,7 +14,6 @@ export const UserContext = createContext();
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState({});
   const [admin, setAdmin] = useState(true);
-  // const { isAdmin } = UseAdmin(loggedInUser);
 
   return (
     <UserContext.Provider
